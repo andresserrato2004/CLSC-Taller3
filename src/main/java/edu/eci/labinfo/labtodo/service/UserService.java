@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.eci.labinfo.labtodo.data.UserRepository;
 import edu.eci.labinfo.labtodo.model.User;
+import java.time.*;
 
 @Service
 public class UserService {
@@ -24,6 +25,10 @@ public class UserService {
     public User addUser(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setCreationDate(LocalDateTime.now());
+        user.setUpdateDate(LocalDateTime.now());
+        user.setLastLoginDate(LocalDateTime.now());
+        user.setConnect(false);
         return userRepository.save(user);
     }
 
@@ -48,12 +53,14 @@ public class UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     public User updateUser(User user) {
         if (userRepository.existsById(user.getUserId())) {
+
             return userRepository.save(user);
         }
         return null;
     }
 
     public void deleteUser(String userName) {
+
         userRepository.delete(getUserByUserName(userName));
     }
 
@@ -62,4 +69,3 @@ public class UserService {
     }
 
 }
-

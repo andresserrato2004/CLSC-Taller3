@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import java.time.*;
 
 @Entity
 @Data
@@ -31,11 +32,15 @@ public class User {
     private String role;
     private String accountType;
     private String password;
+    private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
+    private LocalDateTime lastLoginDate;
+    private boolean connect;
 
     @ManyToMany(mappedBy = "users")
     @ToString.Exclude
     List<Task> tasks;
-    
+
     @OneToMany(mappedBy = "creatorUser")
     @ToString.Exclude
     List<Comment> comments = new ArrayList<>();
