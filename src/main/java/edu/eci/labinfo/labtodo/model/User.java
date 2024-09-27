@@ -49,4 +49,8 @@ public class User {
         tasks.add(taskToAdd);
     }
 
+    public boolean getConnet() {
+        return this.connect;
+    }
+
 }

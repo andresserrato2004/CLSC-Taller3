@@ -10,7 +10,9 @@ import jakarta.faces.context.FacesContext;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.time.*;
 
 @Component
 @SessionScoped
@@ -82,7 +84,9 @@ public class AdminController {
         try {
             for (User user : selectedUsers) {
                 user.setRole(Role.findByValue(newRole).getValue());
+                user.setUpdateDate(LocalDateTime.now());
                 userService.updateUser(user);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,8 +112,11 @@ public class AdminController {
         }
         try {
             for (User user : selectedUsers) {
+
                 user.setAccountType(AccountType.findByValue(newAccountType).getValue());
+                user.setUpdateDate(LocalDateTime.now());
                 userService.updateUser(user);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,7 +147,8 @@ public class AdminController {
             e.printStackTrace();
         } finally {
             int size = this.selectedUsers.size();
-            String summary = size > 1 ? size + " usuarios eliminados con éxito" : size + " usuario eliminado con éxito";
+            String summary = size > 1 ? size + " usuarios :) eliminados con éxito"
+                    : size + " usuario eliminado con éxito";
             selectedUsers.clear();
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));

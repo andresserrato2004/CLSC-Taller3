@@ -54,7 +54,7 @@ public class LoginController {
         this.createdUserAccount = new User();
     }
 
-   public Boolean saveUserAccount() {
+    public Boolean saveUserAccount() {
         logger.info("Guardando cuenta de usuario");
         // Agregar usuario
         if (this.createdUserAccount.getUserId() == null) {
@@ -81,14 +81,16 @@ public class LoginController {
         }
         // Buscar al usuario por nombre de usuario
         User userToLogin = userService.getUserByUserName(userName);
-        // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de error y salir temprano
-        if (userToLogin == null  || !passwordEncoder.matches(password, userToLogin.getPassword())) {
+        // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de
+        // error y salir temprano
+        if (userToLogin == null || !passwordEncoder.matches(password, userToLogin.getPassword())) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.CREDENTIALS_INCORRECT, ERROR));
             PrimeFaces.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
-        // Si al usuario no se le ha verificado su cuenta, mostrar un mensaje de error y salir temprano
+        // Si al usuario no se le ha verificado su cuenta, mostrar un mensaje de error y
+        // salir temprano
         if (userToLogin.getAccountType().equals(AccountType.SIN_VERIFICAR.getValue())) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.UNVERIFIED_ACCOUNT, ERROR));
@@ -137,7 +139,7 @@ public class LoginController {
         return userService.getUserByUserName(userName).getRole();
     }
 
-     /**
+    /**
      * Función que permite el cierre de sesión
      * 
      * @return True si el cierre de sesión es exitoso, de lo contrario False
@@ -203,5 +205,19 @@ public class LoginController {
         return isAdminUser;
     }
 
-    
+    /**
+     * Función que verifica si el usuario es supervisor
+     * 
+     * @param userName el nombre del usuario a verificar.
+     * @return True si el usuario es supervisor, de lo contrario False.
+     */
+    public boolean isSupervisor(String userName) {
+        boolean isSupervisorUser = false;
+        User user = userService.getUserByUserName(userName);
+        if (user.getRole().equals(Role.SUPERVISOR.getValue())) {
+            isSupervisorUser = true;
+        }
+        return isSupervisorUser;
+    }
+
 }
