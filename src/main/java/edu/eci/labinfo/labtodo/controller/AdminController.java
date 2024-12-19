@@ -104,6 +104,7 @@ public class AdminController {
     }
 
     public Boolean modifyUserAccountType() {
+        int count_user_modify = 0;
         if (this.newAccountType == null || this.newAccountType.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.NO_ACCOUNT_TYPE_SELECTED, "Error"));
@@ -112,26 +113,37 @@ public class AdminController {
         }
         try {
             for (User user : selectedUsers) {
-
+                if (!user.getAccountType().equals(AccountType.SOLICITUD_CAMBIO_CONTRASEÑA.getValue())) {
+                    String nameUser = user.getFullName();
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_INFO, LabToDoExeption.USER_NOT_NEW_PASSWORD, nameUser));
+                    primeFacesWrapper.current().ajax().update("form:messages");
+                    continue; // Salta al siguiente usuario en el ciclo
+                }
                 user.setAccountType(AccountType.findByValue(newAccountType).getValue());
                 user.setUpdateDate(LocalDateTime.now());
                 userService.updateUser(user);
-
+                count_user_modify += 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             int size = this.selectedUsers.size();
-            String summary = size > 1 ? size + " usuarios actualizados con éxito"
+            if (count_user_modify > 0){
+                String summary = count_user_modify > 1 ? size + " usuarios actualizados con éxito"
                     : size + " usuario actualizado con éxito";
-            selectedUsers.clear();
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
-            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button",
-                    "form:delete-users-button", "form:edit-users-button");
+                selectedUsers.clear();
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
+                primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button",
+                        "form:delete-users-button", "form:edit-users-button");
+
+            }
+            
         }
         return true;
     }
+
 
     /**
      * Borra los usuarios seleccionados.
