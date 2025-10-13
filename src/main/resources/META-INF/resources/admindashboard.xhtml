@@ -157,10 +157,7 @@
               <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
               <p:selectOneMenu id="typeTask" value="#{taskController.currentTask.typeTask}" required="true" >
                 <f:selectItem itemLabel="Selecciona el tipo de tarea" itemValue="" noSelectionOption="true" />
-                <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
-                <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
-                <f:selectItem itemLabel="Administradores" itemValue="Administradores" 
-                              rendered="#{loginController.isAdmin(loginController.userName)}" />
+                <f:selectItems value="#{taskController.availableTaskTypes}" var="t" itemLabel="#{t}" itemValue="#{t}" />
                 <p:ajax update="user-task-selection" />
               </p:selectOneMenu>
             </div>
