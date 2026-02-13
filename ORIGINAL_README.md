@@ -129,15 +129,15 @@ Se está utilizando el framework de Spring Boot para el desarrollo de la aplicac
 
 Los casos de uso de la aplicación son los siguientes:
 
-![Casos de Uso](assets/diagrams/casos-de-uso.png)
+![Casos de Uso](assets/images/casos-de-uso.png)
 
 El diagrama de conceptos es el siguiente:
 
-![Diagrama de Conceptos](assets/diagrams/conceptos.png)
+![Diagrama de Conceptos](assets/images/conceptos.png)
 
 El diagrama de despliegue de la aplicación es el siguiente:
 
-![Diagrama de Despligue](assets/diagrams/despliegue.png)
+![Diagrama de Despligue](assets/images/despliegue.png)
 
 ## Autores ✒️
 
