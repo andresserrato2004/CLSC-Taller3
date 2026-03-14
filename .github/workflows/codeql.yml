@@ -29,16 +29,26 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Configuramos Java explícitamente para evitar problemas de compatibilidad en el runner de GitHub
+    - name: Set up JDK 17
+      if: matrix.language == 'java-kotlin'
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Según tus logs de Maven, usas release 17
+        distribution: 'temurin'
+        cache: 'maven' # Optimiza el tiempo resolviendo dependencias
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
+    # Simplificado ya que tu pom.xml está en la raíz, usamos mvn directo con el mismo script con el que vimos que funcionaba omitiendo tests
     - name: Build Java
       if: matrix.language == 'java-kotlin'
       run: |
-        mvn clean package -DskipTests -f tools/deploy/module2/pom.xml
+        mvn clean package -DskipTests
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
