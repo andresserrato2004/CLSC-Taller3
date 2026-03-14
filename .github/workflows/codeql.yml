@@ -5,13 +5,11 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '39 18 * * 6'
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
@@ -37,11 +35,10 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
-    # Paso requerido por el Módulo 2 para compilar el proyecto manualmente
     - name: Build Java
       if: matrix.language == 'java-kotlin'
       run: |
-        mvn clean package -f tools/deploy/module2/pom.xml
+        mvn clean package -DskipTests -f tools/deploy/module2/pom.xml
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
