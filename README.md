@@ -2854,6 +2854,11 @@ labtodo-refactoring/
 
 ## 🧪 **Testing Strategy**
 
+The repository now includes concrete testing scaffolding for AAA, FIRST, and `should` or `shouldNot` naming conventions.
+
+- `./mvnw test` for unit tests and fast smoke tests.
+- `./mvnw verify` for unit, integration, and acceptance tests.
+
 ### **Test Pyramid**
 
 ```
